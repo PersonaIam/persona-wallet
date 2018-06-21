@@ -1054,7 +1054,7 @@
           darkVibrantRatio[color] = darkVibrantDiff
         })
 
-        const isArkJpg = _path.basename(url) === 'Ark.jpg'
+        const isArkJpg = _path.basename(url) === 'Persona.jpg'
         let primaryColor = isArkJpg ? 'red' : sortObj(darkVibrantRatio)[0]
         let accentColor = sortObj(vibrantRatio)[0]
 
@@ -1181,7 +1181,7 @@
         delete backgrounds['user'][name]
 
         if (image === initialBackground) {
-          selectBackground(backgrounds['images']['Ark'])
+          selectBackground(backgrounds['images']['Persona'])
         } else {
           selectBackground(initialBackground)
         }

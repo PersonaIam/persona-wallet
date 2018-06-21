@@ -10,7 +10,7 @@ const ipcMain = electron.ipcMain
 const Menu = electron.Menu
 
 const ledger = require('ledgerco')
-const LedgerPersona = require(_path.resolve(__dirname, './LedgerArk'))
+const LedgerPersona = require(_path.resolve(__dirname, './LedgerPersona'))
 const fork = require('child_process').fork
 
 // Keep a global reference of the window object, if you don't, the window will

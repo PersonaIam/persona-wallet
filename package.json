@@ -27,7 +27,7 @@
     "url": "git+https://github.com/PersonaIam/persona-desktop.git"
   },
   "keywords": [
-    "Ark",
+    "Persona",
     "Client",
     "Electron"
   ],
@@ -82,11 +82,11 @@
     "spectron": "^3.7.2"
   },
   "build": {
-    "appId": "com.arkwallet.liteclient",
+    "appId": "com.personawallet.liteclient",
     "protocols": {
-      "name": "Ark URI scheme",
+      "name": "Persona URI scheme",
       "schemes": [
-        "ark"
+        "persona"
       ],
       "role": "Viewer"
     },
@@ -98,18 +98,18 @@
       "icon": "build/icon.ico"
     },
     "linux": {
-      "description": "A Lite Client used to securely connect to the Ark network and manage your Ark assets.",
+      "description": "A Lite Client used to securely connect to the Persona network and manage your Persona assets.",
       "target": [
         "deb",
         "tar.xz"
       ],
       "desktop": {
-        "MimeType": "x-scheme-handler/ark;"
+        "MimeType": "x-scheme-handler/persona;"
       },
       "category": "Network"
     },
     "deb": {
-      "synopsis": "Ark Desktop Wallet"
+      "synopsis": "Persona Desktop Wallet"
     },
     "dmg": {
       "icon": "build/icon.icns"
