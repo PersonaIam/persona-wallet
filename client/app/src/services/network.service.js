@@ -36,6 +36,15 @@
       price: storageService.getGlobal('peerCurrencies') || { btc: '0.0' }
     }
 
+    let seed = {
+      ip: network.peerseed,
+      network: storageService.getContext(),
+      isConnected: false,
+      height: 0,
+      lastConnection: null,
+      price: storageService.getGlobal('peerCurrencies') || { btc: '0.0' }
+    }
+
     const connection = $q.defer()
 
     connection.notify(peer)
@@ -109,7 +118,7 @@
       if (!n) {
         n = {
           mainnet: createNetworkFromPersonaJs(mainNetPersonaJsNetworkKey, 0x37, 111, 'url(assets/images/images/Persona.jpg)'),
-          testnet: createNetworkFromPersonaJs(testNetPersonaJsNetworkKey, 30, 1, '#222299')
+          testnet: createNetworkFromPersonaJs(testNetPersonaJsNetworkKey, 0x40, 1, '#222299')
         }
         storageService.setGlobal('networks', n)
       }
@@ -243,12 +252,12 @@
       const deferred = $q.defer()
       let peerip = ip
       if (!peerip) {
-        peerip = peer.ip
+        peerip = seed.ip
       }
       $http({
-        url: peerip + '/api/peer/transactions',
-        data: { transactions: [transaction] },
-        method: 'POST',
+        url: peerip + '/api/transactions',
+        data: transaction,
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'os': 'ark-desktop',

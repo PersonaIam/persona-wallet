@@ -9,12 +9,10 @@
    * @constructor
    */
   function TimeService ($q, $http) {
-    const timeServerUrl = 'http://tycho.usno.navy.mil/cgi-bin/time.pl'
-    let serverLatency = 0
+    const timeServerUrl = 'http://worldclockapi.com/api/json/utc/now'
     let config = {
       timeout: 2000
     }
-    let localToServerTimeDiff = 0
 
     /**
      * Function gets a server timestamp as to not rely on the users local clock.
@@ -23,34 +21,24 @@
      */
     function getTimestamp () {
       const deferred = $q.defer()
-
       const startTime = new Date().getTime()
-
+      let computedTimestamp = startTime
       $http.get(timeServerUrl, config).then(
         (success) => {
-          const timestamp = success.headers().date
-          const processedTimestamp = new Date(timestamp).getTime()
-          const endTime = new Date().getTime()
-
-          serverLatency = endTime - startTime
-
-          const computedTimestamp = processedTimestamp + serverLatency
-
-          const currentLocalTime = new Date().getTime()
-          localToServerTimeDiff = computedTimestamp - currentLocalTime
-
-          deferred.resolve(computedTimestamp)
+          if (success.data.currentDateTime !== undefined) {
+            const timestamp = new Date(success.data.currentDateTime).getTime()
+            const endTime = new Date().getTime()
+            computedTimestamp = timestamp + (endTime - startTime)
+          } else {
+            computedTimestamp = new Date().getTime()
+          }
         },
         (_error) => {
           // use the system time instead on error
-          const timestamp = new Date().getTime()
-
-          const computedTimestamp = timestamp + localToServerTimeDiff
-
-          deferred.resolve(computedTimestamp)
+          computedTimestamp = new Date().getTime()
         }
       )
-
+      deferred.resolve(computedTimestamp)
       return deferred.promise
     }
 

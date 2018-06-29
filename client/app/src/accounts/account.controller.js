@@ -1611,6 +1611,7 @@
     }
 
     function showValidateTransaction (selectedAccount, transaction, cb) {
+      console.log('validateTransaction')
       function saveFile () {
         const fs = require('fs')
         const raw = JSON.stringify(transaction)
@@ -1646,7 +1647,7 @@
       function send () {
         $mdDialog.hide()
 
-        transaction = accountService.formatTransaction(transaction, selectedAccount.address)
+        transaction = accountService.formatTransaction(transaction, transaction.recipientId)
         transaction.confirmations = 0
 
         networkService.postTransaction(transaction).then(
@@ -1678,8 +1679,8 @@
         transaction,
         label: transactionLabel,
         // to avoid small transaction to be displayed as 1e-8
-        humanAmount: utilityService.arktoshiToArk(transaction.amount),
-        totalAmount: utilityService.arktoshiToArk(parseFloat(transaction.amount) + transaction.fee, true)
+        humanAmount: transaction.amount,
+        totalAmount: parseFloat(transaction.amount) + transaction.fee
       }
 
       const contacts = self.searchContactOrAccount(transaction.recipientId, true)

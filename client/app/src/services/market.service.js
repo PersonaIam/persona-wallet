@@ -10,7 +10,7 @@
     const currencies = ['BTC', 'AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'EUR', 'GBP', 'HKD', 'IDR', 'INR', 'JPY', 'KRW', 'MXN', 'RUB']
     const storageKey = 'marketTicker'
     const network = networkService.getNetwork()
-    const symbol = network.cmcTicker || 'ARK'
+    const symbol = 'BTC'
 
     const saveTicker = (ticker) => {
       const symbol = ticker.symbol
@@ -28,9 +28,10 @@
     }
 
     const getPrice = (currency = 'BTC') => {
-      if (!network.cmcTicker && network.token !== 'ARK') getEmptyMarket()
+      if (!network.cmcTicker && network.token !== 'BTC') getEmptyMarket()
 
       const storage = storageService.get(storageKey)
+      if (!storage) return getEmptyMarket()
       const market = storage[symbol]
 
       if (!market) return getEmptyMarket()
