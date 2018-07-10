@@ -146,8 +146,8 @@ describe('AddressbookController', () => {
 
     context('adding contact with unique name and address', () => {
       it('is successful', () => {
-        const name = 'test_name'
-        const address = 'AThTtim37wR11D3hxGVtruS3UQTbsjsW3t'
+        const name = 'unique_test_name'
+        const address = 'PV5PbsyhkM1RkN41QiSXy7cisbZ4kBzm51'
 
         ctrl.addAddressbookContact()
         const sizeBefore = Object.keys(ctrl.contacts).length
@@ -162,8 +162,8 @@ describe('AddressbookController', () => {
     context('adding contact with duplicate name', () => {
       it('fails to add due to duplicate name, nothing else added', () => {
         const name = 'test_name'
-        const address1 = 'AThTtim37wR11D3hxGVtruS3UQTbsjsW3t'
-        const address2 = 'AaLCSaTzwFhrEwvHtpGEt4peVzB1faAvSc'
+        const address1 = 'PV5PbsyhkM1RkN41QiSXy7cisbZ4kBzm51'
+        const address2 = 'PJaN3hcTvu8GDcJyFNmEYHMG7KzBgVxcsx'
 
         ctrl.addAddressbookContact()
         expect(ctrl.contactExists(name)).to.be.false
@@ -184,7 +184,7 @@ describe('AddressbookController', () => {
       it('fails to add due to duplicate address, nothing else added', () => {
         const name1 = 'test_name'
         const name2 = 'test_name2'
-        const address = 'AThTtim37wR11D3hxGVtruS3UQTbsjsW3t'
+        const address = 'PV5PbsyhkM1RkN41QiSXy7cisbZ4kBzm51'
 
         ctrl.addAddressbookContact()
         $scope.addAddressbookContact.add(name1, address)

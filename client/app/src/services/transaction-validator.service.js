@@ -125,10 +125,10 @@
         cancel,
         senderAddress: selectedAccount.address,
         transactions,
-        humanAmount: utilityService.arktoshiToArk(amount).toString(),
-        totalFees: utilityService.arktoshiToArk(fees).toString(),
-        totalAmount: utilityService.arktoshiToArk(total).toString(),
-        remainingBalance: utilityService.arktoshiToArk(balance).toString()
+        humanAmount: utilityService.toshiToPersona(amount).toString(),
+        totalFees: utilityService.toshiToPersona(fees).toString(),
+        totalAmount: utilityService.toshiToPersona(total).toString(),
+        remainingBalance: utilityService.toshiToPersona(balance).toString()
       }
 
       dialogService.open({

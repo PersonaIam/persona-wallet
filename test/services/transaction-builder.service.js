@@ -1,30 +1,30 @@
 'use strict'
 
 describe('transactionBuilderService', () => {
-  const tokenName = 'test-ark'
+  const tokenName = 'test-persona'
   let transactionBuilderService, accountService
   let configServiceMock, gettextCatalogMock, gettextMock, networkServiceMock, ledgerServiceMock, getAccountStub
   let intervalRef
 
   const fees = {
-    send: 20000000,
-    vote: 300000000,
-    secondsignature: 400000000,
-    delegate: 500000000,
-    multisignature: 600000000
+    send: 10000000,
+    vote: 100000000,
+    delegate: 250000000,
+    secondsignature: 500000000,
+    multisignature: 500000000
   }
 
   const from = {
     username: 'Luke Skywalker',
-    address: 'AVjcAoo282db5Xgm7oaps1AEbKoC26eTyB',
-    masterpassphrase: 'agent cube glass fade lonely salon border notable weekend expect image grunt',
-    secondpassphrase: 'agent cube glass fade lonely salon border notable weekend expect image grunt',
+    address: 'PV5PbsyhkM1RkN41QiSXy7cisbZ4kBzm51',
+    masterpassphrase: 'place arrange potato piano mixture reflect mixture alpha identify unfair rural artwork',
+    secondpassphrase: 'place arrange potato piano mixture reflect mixture alpha identify unfair rural artwork',
     balance: 600000000
   }
 
   const to = {
-    address: 'AYxKh6vwACWicSGJATGE3rBreFK7whc7YA',
-    publicKey: '02dcb94d73fb54e775f734762d26975d57f18980314f3b67bc52beb393893bc705'
+    address: 'PJaN3hcTvu8GDcJyFNmEYHMG7KzBgVxcsx',
+    publicKey: '02be9c1fabf4ff21231c71723c13ecc4553996a857c1d9193ea959d9a7b7d77567 '
   }
 
   function createValidConfigObject () {
@@ -63,7 +63,7 @@ describe('transactionBuilderService', () => {
       networkServiceMock = {
         listenNetworkHeight: sinon.stub(),
         getPeer: sinon.stub().returns('127.0.0.1'),
-        getNetwork: sinon.stub().returns({ version: 0x17, token: tokenName })
+        getNetwork: sinon.stub().returns({ version: 0x37, token: tokenName })
       }
       ledgerServiceMock = {signTransaction: sinon.stub().resolves({})}
 
@@ -116,7 +116,6 @@ describe('transactionBuilderService', () => {
 
     it('should have correct fee', done => {
       const sendPromise = transactionBuilderService.createSendTransaction(createValidConfigObject())
-
       sendPromise.then(transaction => {
         expect(transaction.fee).to.eql(fees.send)
         done()

@@ -10,15 +10,14 @@
             if (typeof value === 'undefined' || value === 0) {
               ctrl.$pristine = true
             }
-            let num = value // 1.1 = 110000000
+            let num = Number(utilityService.personaToToshi(value, 0)) // 1.1 = 110000000
 
             // TODO refactor to avoid the difference between `$scope.x` and `$scope.send.x`
 
             let totalBalance = scope.send ? scope.send.totalBalance : scope.totalBalance
-            // totalBalance = totalBalance
+            totalBalance = Number(utilityService.personaToToshi(totalBalance))
 
-            let remainingBalance = totalBalance - num
-            remainingBalance = isNaN(remainingBalance) ? utilityService.arktoshiToArk(totalBalance, true) : remainingBalance
+            let remainingBalance = utilityService.toshiToPersona(totalBalance - num, true)
             if (scope.send) {
               scope.send.remainingBalance = remainingBalance
             } else {

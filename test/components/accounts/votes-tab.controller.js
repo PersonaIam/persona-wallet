@@ -58,10 +58,10 @@ describe('VotesTabController', () => {
       $provide.value('transactionBuilderService', transactionBuilderServiceMock)
       $provide.value('$mdDialog', mdDialogMock)
       $provide.value('toastService', toastServiceMock)
-      $provide.value('ARKTOSHI_UNIT', Math.pow(10, 8))
-      $provide.value('ARK_LAUNCH_DATE', new Date(Date.UTC(2017, 2, 21, 13, 0, 0, 0)))
+      $provide.value('PERSONATOSHI_UNIT', Math.pow(10, 8))
+      $provide.value('LAUNCH_DATE', new Date(Date.UTC(2017, 2, 21, 13, 0, 0, 0)))
       $provide.value('TRANSACTION_TYPES', {
-        'SEND_ARK': 0,
+        'SEND_PERSONA': 0,
         'CREATE_SECOND_PASSPHRASE': 1,
         'CREATE_DELEGATE': 2,
         'VOTE': 3

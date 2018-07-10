@@ -3,7 +3,7 @@
 describe('AccountBoxController', () => {
   const expect = chai.expect
 
-  let ctrl, ARKTOSHI_UNIT, accounts, bindings, accountType, accountService
+  let ctrl, PERSONATOSHI_UNIT, accounts, bindings, accountType, accountService
 
   beforeEach(module('personaclient.constants'))
 
@@ -11,12 +11,12 @@ describe('AccountBoxController', () => {
     module('personaclient.components', $provide => {
     })
 
-    inject((_$componentController_, _ARKTOSHI_UNIT_, $injector) => {
-      ARKTOSHI_UNIT = _ARKTOSHI_UNIT_
+    inject((_$componentController_, _PERSONATOSHI_UNIT_, $injector) => {
+      PERSONATOSHI_UNIT = _PERSONATOSHI_UNIT_
       accounts = [
-        { balance: 10 * ARKTOSHI_UNIT },
-        { balance: 15 * ARKTOSHI_UNIT },
-        { balance: 5 * ARKTOSHI_UNIT },
+        { balance: 10 * PERSONATOSHI_UNIT },
+        { balance: 15 * PERSONATOSHI_UNIT },
+        { balance: 5 * PERSONATOSHI_UNIT },
         {}
       ]
 

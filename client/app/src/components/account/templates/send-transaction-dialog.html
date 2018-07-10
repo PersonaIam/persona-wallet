@@ -93,7 +93,7 @@
               <input ng-model="data.smartbridge" type="text" ng-required="false" maxlength="64" tabIndex="3">
         </md-input-container>
 
-            <passphrase-field ng-if="data.ledger" ng-model="data.passphrase" label="{{'Passphrase' | translate}}" tab-index="4"></passphrase-field>
+            <passphrase-field ng-if="!data.ledger" ng-model="data.passphrase" label="{{'Passphrase' | translate}}" tab-index="4"></passphrase-field>
             <passphrase-field ng-if="data.secondSignature"ng-model="data.secondPassphrase" label="{{'Second Passphrase' | translate}}" tab-index="5"></passphrase-field>
 
           </form>

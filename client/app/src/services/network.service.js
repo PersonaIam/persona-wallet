@@ -118,7 +118,7 @@
       if (!n) {
         n = {
           mainnet: createNetworkFromPersonaJs(mainNetPersonaJsNetworkKey, 0x37, 111, 'url(assets/images/images/Persona.jpg)'),
-          testnet: createNetworkFromPersonaJs(testNetPersonaJsNetworkKey, 0x40, 1, '#222299')
+          testnet: createNetworkFromPersonaJs(testNetPersonaJsNetworkKey, 0x42, 1, '#222299')
         }
         storageService.setGlobal('networks', n)
       }

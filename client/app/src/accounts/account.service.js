@@ -2,7 +2,7 @@
   'use strict'
 
   angular.module('personaclient.accounts')
-    .service('accountService', ['$q', '$http', 'networkService', 'storageService', 'ledgerService', 'gettextCatalog', 'gettext', 'utilityService', 'ARK_LAUNCH_DATE', AccountService])
+    .service('accountService', ['$q', '$http', 'networkService', 'storageService', 'ledgerService', 'gettextCatalog', 'gettext', 'utilityService', 'LAUNCH_DATE', AccountService])
 
   /**
    * Accounts DataService
@@ -12,7 +12,7 @@
    * @returns {{loadAll: Function}}
    * @constructor
    */
-  function AccountService ($q, $http, networkService, storageService, ledgerService, gettextCatalog, gettext, utilityService, ARK_LAUNCH_DATE) {
+  function AccountService ($q, $http, networkService, storageService, ledgerService, gettextCatalog, gettext, utilityService, LAUNCH_DATE) {
     const self = this
     const persona = require(require('path').resolve(__dirname, '../node_modules/personajs'))
 
@@ -37,7 +37,7 @@
     self.peer = networkService.getPeer().ip
 
     function showTimestamp (timestamp) { // eslint-disable-line no-unused-vars
-      const date = utilityService.arkStampToDate(timestamp)
+      const date = utilityService.personaStampToDate(timestamp)
 
       const currentTime = new Date().getTime()
       const diffTime = (currentTime - date.getTime()) / 1000
@@ -225,7 +225,7 @@
         transaction.total = -transaction.amount - transaction.fee
       }
       // to avoid small transaction to be displayed as 1e-8
-      transaction.humanTotal = utilityService.arktoshiToArk(transaction.total) + ''
+      transaction.humanTotal = utilityService.toshiToPersona(transaction.total) + ''
 
       return transaction
     }
@@ -283,8 +283,8 @@
 
     // this methods only works correctly, as long as getAllTransactions returns the transactions ordered by new to old!
     function getRangedTransactions (address, startDate, endDate, onUpdate) {
-      const startStamp = utilityService.dateToArkStamp(!startDate ? ARK_LAUNCH_DATE : startDate)
-      const endStamp = utilityService.dateToArkStamp(!endDate ? new Date(new Date().setHours(23, 59, 59, 59)) : endDate)
+      const startStamp = utilityService.dateToPersonaStamp(!startDate ? LAUNCH_DATE : startDate)
+      const endStamp = utilityService.dateToPersonaStamp(!endDate ? new Date(new Date().setHours(23, 59, 59, 59)) : endDate)
 
       const deferred = $q.defer()
 
@@ -645,10 +645,10 @@
                 if (value === null) {
                   virtual[folder].amount = null
                 } else {
-                  virtual[folder].amount = utilityService.arkToArktoshi(value)
+                  virtual[folder].amount = utilityService.personaToToshi(value)
                 }
               } else {
-                return virtual[folder].amount === null ? '' : utilityService.arktoshiToArk(virtual[folder].amount, true)
+                return virtual[folder].amount === null ? '' : utilityService.toshiToPersona(virtual[folder].amount, true)
               }
             }
           }

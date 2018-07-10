@@ -23,7 +23,7 @@
 
       const getTotalBalance = fee => {
         const balance = selectedAccount.balance
-        return utilityService.arktoshiToArk(fee ? balance - fee : balance)
+        return utilityService.toshiToPersona(fee ? balance - fee : balance)
       }
 
       const parseTransactionsFile = (filePath, callback) => {
@@ -33,7 +33,7 @@
             toastService.error(gettextCatalog.getString('Unable to load file') + ': ' + err)
           } else {
             const parse = require('csv-parse')
-            parse(data, { quote: null, to: $scope.maxTransactionsPerFile }, (err, transactionsData) => {
+            parse(data, {quote: null, to: $scope.maxTransactionsPerFile}, (err, transactionsData) => {
               if (err) {
                 return toastService.error(gettext('Error while parsing the file'))
               }
@@ -48,7 +48,7 @@
         return data.map(d => {
           return {
             address: d[0],
-            amount: d[1],
+            amount: Number(utilityService.personaToToshi(parseFloat(d[1]), 0)),
             smartbridge: d[2]
           }
         })
@@ -96,7 +96,7 @@
 
         if (tab === 'single') {
           data.toAddress = $scope.data.toAddress.trim()
-          data.amount = $scope.data.amount
+          data.amount = Number(utilityService.personaToToshi(parseFloat($scope.data.amount), 0))
           data.smartbridge = $scope.data.smartbridge
 
           prepareTransaction(selectedAccount, data)
@@ -148,6 +148,7 @@
           const sendableBalance = getTotalBalance(fee)
           $scope.data.amount = sendableBalance > 0 ? sendableBalance : 0
         }
+
         // Set the balance with the default fees while updating it with the real fees
         setBalance(accountService.defaultFees.send)
         accountService.getFees(true).then(fees => {
@@ -159,12 +160,13 @@
 
       $scope.onQrCodeForToAddressScanned = address => {
         // This triggers the `selectedContactChange` function, which sets the `toAddress`
-        $scope.data.selectedAddress = { address }
+        $scope.data.selectedAddress = {address}
       }
 
       /* Auto-complete */
 
       let receiverValidationCycle = 0
+
       function validateReceiverAddress (input, exactMatch) {
         // failType specifies the "fail level", but is at the same time, also the icon name
         $scope.receiverValidation = {failType: null, message: null}

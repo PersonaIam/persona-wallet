@@ -108,7 +108,7 @@
         return sum + parseInt(account.balance || 0)
       }, 0)
 
-      return utilityService.arktoshiToArk(total, true, 2)
+      return utilityService.toshiToPersona(total, true, 2)
     }
 
     this.currencyBalance = (accountType) => {

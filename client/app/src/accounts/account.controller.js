@@ -535,7 +535,7 @@
     }
 
     self.saveFolder = function (account, folder) {
-      accountService.setToFolder(account.address, folder, utilityService.arkToArktoshi(account.virtual.uservalue(folder)()))
+      accountService.setToFolder(account.address, folder, utilityService.personaToToshi(account.virtual.uservalue(folder)()))
     }
 
     self.deleteFolder = function (account, foldername) {
@@ -1556,7 +1556,7 @@
       function warnAboutSecondPassphraseFee () {
         accountService.getFees(true).then((fees) => {
           const secondPhraseArktoshiVal = fees['secondsignature']
-          const secondPhraseArkVal = utilityService.arktoshiToArk(secondPhraseArktoshiVal, true)
+          const secondPhraseArkVal = utilityService.toshiToPersona(secondPhraseArktoshiVal, true)
           const confirm = $mdDialog.confirm({
             title: gettextCatalog.getString('Second Passphrase fee ({{ currency }})', {currency: networkService.getNetwork().symbol}),
             secondPhraseArkVal: secondPhraseArkVal,

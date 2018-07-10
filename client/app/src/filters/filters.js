@@ -33,9 +33,9 @@
 
       return localeVersion
     })
-    // Converts arktoshi into ark
+    // Converts personaToshi into persona
     .filter('convertToArkValue', ['utilityService', utilityService => val => {
-      return utilityService.arktoshiToArk(val, true)
+      return utilityService.toshiToPersona(val, true)
     }])
     .filter('accountLabel', ['accountService', accountService => address => {
       if (!address) return address

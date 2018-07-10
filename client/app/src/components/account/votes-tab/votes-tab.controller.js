@@ -1,7 +1,7 @@
 ;(function () {
   'use strict'
 
-  let VotesTabController = function VotesTabController ($scope, $mdDialog, accountService, transactionBuilderService, networkService, toastService, gettext, TRANSACTION_TYPES) {
+  let VotesTabController = function VotesTabController ($scope, $mdDialog, accountService, transactionBuilderService, networkService, toastService, gettext) {
     this.accountAddress = ''
     this.delegates = []
     this.network = networkService.getNetwork()
@@ -9,7 +9,7 @@
     this.ul = {}
 
     this.$onInit = () => {
-      this.ul = this.accountCtrl // TODO depricate
+      this.ul = this.accountCtrl
     }
 
     this.getDelegateList = (accountObj) => {
@@ -92,7 +92,7 @@
       templateUrl: 'src/components/account/votes-tab/templates/votes-tab.html',
       bindings: {
         account: '=',
-        accountCtrl: '=', // TODO depricate
+        accountCtrl: '=', // TODO deprecate
         theme: '<'
       },
       controller: VotesTabController
