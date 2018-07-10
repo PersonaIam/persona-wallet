@@ -1054,8 +1054,8 @@
           darkVibrantRatio[color] = darkVibrantDiff
         })
 
-        const isArkJpg = _path.basename(url) === 'Persona.jpg'
-        let primaryColor = isArkJpg ? 'red' : sortObj(darkVibrantRatio)[0]
+        const isPersonaJpg = _path.basename(url) === 'Persona.jpg'
+        let primaryColor = isPersonaJpg ? 'red' : sortObj(darkVibrantRatio)[0]
         let accentColor = sortObj(vibrantRatio)[0]
 
         primaryColor = primaryColor === 'grey' ? 'blue-grey' : primaryColor

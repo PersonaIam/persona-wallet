@@ -218,7 +218,7 @@
       if (transaction.recipientId === recipientAddress) {
         transaction.total = transaction.amount
       // if (transaction.type == 0) {
-      //   transaction.label = gettextCatalog.getString("Receive Ark")
+      //   transaction.label = gettextCatalog.getString("Receive tokens")
       // }
       }
       if (transaction.senderId === recipientAddress) {
