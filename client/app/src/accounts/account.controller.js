@@ -1611,7 +1611,6 @@
     }
 
     function showValidateTransaction (selectedAccount, transaction, cb) {
-      console.log('validateTransaction')
       function saveFile () {
         const fs = require('fs')
         const raw = JSON.stringify(transaction)
