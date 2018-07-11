@@ -1,6 +1,6 @@
 {
   "name": "PersonaClient",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "productName": "PersonaClient",
   "description": "Persona Desktop Wallet",
   "main": "main.js",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PersonaIam/persona-desktop.git"
+    "url": "git+https://github.com/PersonaIam/persona-wallet.git"
   },
   "keywords": [
     "Persona",
@@ -33,9 +33,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PersonaIam/persona-desktop/issues"
+    "url": "https://github.com/PersonaIam/persona-wallet/issues"
   },
-  "homepage": "https://github.com/PersonaIam/persona-desktop#readme",
+  "homepage": "https://github.com/PersonaIam/persona-wallet#readme",
   "dependencies": {
     "about-window": "~1.8.0",
     "async": "^2.5.0",
