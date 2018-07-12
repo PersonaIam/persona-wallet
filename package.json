@@ -4,6 +4,7 @@
   "productName": "PersonaClient",
   "description": "Persona Desktop Wallet",
   "main": "main.js",
+  "author": "Stefan <stefan@persona.im>",
   "scripts": {
     "postinstall": "cd client && npm install && npm run bundle && cd .. && electron-builder install-app-deps && npm run rebuild",
     "rebuild": "electron-rebuild --force --module_dir . -w node-hid ",
@@ -24,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PersonaIam/persona-desktop.git"
+    "url": "git+https://github.com/PersonaIam/persona-wallet.git"
   },
   "keywords": [
     "Persona",
