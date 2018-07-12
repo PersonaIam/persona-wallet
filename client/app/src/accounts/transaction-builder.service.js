@@ -218,7 +218,7 @@
     }
 
     function arktoshiToArk (value) {
-      return utilityService.arktoshiToArk(value) + ' ' + networkService.getNetwork().token
+      return utilityService.toshiToPersona(value) + ' ' + networkService.getNetwork().token
     }
 
     return {

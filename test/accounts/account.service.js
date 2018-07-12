@@ -44,7 +44,7 @@ describe('accountService', () => {
       gettextMock = sinon.stub().returnsArg(0)
       networkServiceMock = { listenNetworkHeight: sinon.stub(),
         getPeer: sinon.stub().returns('127.0.0.1'),
-        getNetwork: sinon.stub().returns({ version: 0x37 }) } // TODO: 0x17
+        getNetwork: sinon.stub().returns({ version: 0x37 }) }
 
       // inject the mock services
       $provide.value('gettextCatalog', gettextCatalogMock)
@@ -197,7 +197,7 @@ describe('accountService', () => {
   })
 
   describe('getRangedTransactions', () => {
-    // these are all ark-relative timestamps
+    // these are all persona-relative timestamps
     const timestamps = {
       '2017_05_05': 3834000,
       '2017_10_10': 17485200,

@@ -36,6 +36,15 @@
       price: storageService.getGlobal('peerCurrencies') || { btc: '0.0' }
     }
 
+    let seed = {
+      ip: network.peerseed,
+      network: storageService.getContext(),
+      isConnected: false,
+      height: 0,
+      lastConnection: null,
+      price: storageService.getGlobal('peerCurrencies') || { btc: '0.0' }
+    }
+
     const connection = $q.defer()
 
     connection.notify(peer)
@@ -109,7 +118,7 @@
       if (!n) {
         n = {
           mainnet: createNetworkFromPersonaJs(mainNetPersonaJsNetworkKey, 0x37, 111, 'url(assets/images/images/Persona.jpg)'),
-          testnet: createNetworkFromPersonaJs(testNetPersonaJsNetworkKey, 30, 1, '#222299')
+          testnet: createNetworkFromPersonaJs(testNetPersonaJsNetworkKey, 0x42, 1, '#222299')
         }
         storageService.setGlobal('networks', n)
       }
@@ -119,16 +128,16 @@
       return n[newnetwork]
     }
 
-    function createNetworkFromPersonaJs (arkJsNetworkKey, version, slip44, background) {
-      const arkJsNetwork = persona.networks[arkJsNetworkKey]
+    function createNetworkFromPersonaJs (personaJsNetworkKey, version, slip44, background) {
+      const personaJsNetwork = persona.networks[personaJsNetworkKey]
 
       return {
-        arkJsKey: arkJsNetworkKey,
-        nethash: arkJsNetwork.nethash,
-        peerseed: 'http://' + arkJsNetwork.activePeer.ip + ':' + arkJsNetwork.activePeer.port,
-        token: arkJsNetwork.token,
-        symbol: arkJsNetwork.symbol,
-        explorer: arkJsNetwork.explorer,
+        personaJsKey: personaJsNetworkKey,
+        nethash: personaJsNetwork.nethash,
+        peerseed: 'http://' + personaJsNetwork.activePeer.ip + ':' + personaJsNetwork.activePeer.port,
+        token: personaJsNetwork.token,
+        symbol: personaJsNetwork.symbol,
+        explorer: personaJsNetwork.explorer,
         version: version,
         slip44: slip44,
         forcepeer: false,
@@ -139,16 +148,16 @@
     }
 
     function tryGetPeersFromPersonaJs () {
-      if (!network.arkJsKey) {
+      if (!network.personaJsKey) {
         return
       }
 
-      const arkjsNetwork = persona.networks[network.arkJsKey]
-      if (!arkjsNetwork) {
+      const personaJsNetwork = persona.networks[network.personaJsKey]
+      if (!personaJsNetwork) {
         return
       }
 
-      return arkjsNetwork.peers
+      return personaJsNetwork.peers
     }
 
     function getNetwork () {
@@ -200,7 +209,7 @@
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'os': 'ark-desktop',
+          'os': 'persona-desktop',
           'version': clientVersion,
           'port': 1,
           'nethash': network.nethash
@@ -232,26 +241,26 @@
       if (!max) {
         max = 10
       }
-      for (let i = 0; i < max; i++) {
-        if (i < peers.length) {
-          postTransaction(transaction, 'http://' + peers[i].ip + ':' + peers[i].port)
-        }
-      }
+      // for (let i = 0; i < max; i++) {
+      //   if (i < peers.length) {
+      //     postTransaction(transaction, 'http://' + peers[i].ip + ':' + peers[i].port)
+      //   }
+      // }
     }
 
     function postTransaction (transaction, ip) {
       const deferred = $q.defer()
       let peerip = ip
       if (!peerip) {
-        peerip = peer.ip
+        peerip = seed.ip
       }
       $http({
-        url: peerip + '/api/peer/transactions',
-        data: { transactions: [transaction] },
-        method: 'POST',
+        url: peerip + '/api/transactions',
+        data: transaction,
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'os': 'ark-desktop',
+          'os': 'persona-desktop',
           'version': clientVersion,
           'port': 1,
           'nethash': network.nethash
@@ -260,7 +269,7 @@
         if (resp.data.success) {
           // we make sure that tx is well broadcasted
           if (!ip) {
-            broadcastTransaction(transaction)
+            // broadcastTransaction(transaction)
           }
           deferred.resolve(transaction)
         } else {
@@ -301,14 +310,14 @@
         // we don't have any peers, that means the app is probably started for the first time
         // (and therefore we do not have a peer list in our storage)
         // and getting a peer list failed (the peerseed server may be down)
-        // in this case we try to get a peer from the hardcoded list in the arkjs config
+        // in this case we try to get a peer from the hardcoded list in the personajs config
         peers = tryGetPeersFromPersonaJs()
         isStaticPeerList = true
       } else if (index === 0) {
         peers = peers.sort((a, b) => b.height - a.height || a.delay - b.delay).filter(p => p.ip !== '127.0.0.1')
       }
 
-      // check again or we may have an exception in the case when we couldn't get the static peer list from arkjs
+      // check again or we may have an exception in the case when we couldn't get the static peer list from personajs
       if (!isPeerListValid()) {
         return
       }
@@ -339,7 +348,7 @@
 
     function getLatestClientVersion () {
       const deferred = $q.defer()
-      const url = 'https://api.github.com/repos/ArkEcosystem/ark-desktop/releases/latest'
+      const url = 'https://github.com/PersonaIam/persona-wallet/releases/latest'
       $http.get(url, { timeout: 5000 })
         .then((res) => {
           deferred.resolve(res.data.tag_name)

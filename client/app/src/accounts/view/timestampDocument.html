@@ -43,7 +43,7 @@
     <md-dialog-actions layout="row" style="padding-left: 20px">
       <span flex></span>
       <!-- workaround for pull first item on left -->
-      <md-button type="submit" ng-disabled="sendArkForm.$invalid" md-colors="{background:'primary'}">
+      <md-button type="submit" md-colors="{background:'primary'}">
         <translate ng-if="!send.data.ledger">Next</translate>
         <translate ng-if="send.data.ledger">Sign with Ledger</translate>
       </md-button>

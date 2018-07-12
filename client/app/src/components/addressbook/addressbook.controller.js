@@ -239,7 +239,7 @@
             return prev + el
           })
 
-          stats.income.amount = utilityService.arktoshiToArk(incomeAmount, false, 2)
+          stats.income.amount = utilityService.toshiToPersona(incomeAmount, false, 2)
         }
 
         if (expendTx.length > 0) {
@@ -249,7 +249,7 @@
             return prev + el
           })
 
-          stats.expend.amount = utilityService.arktoshiToArk(expendAmount, false, 2)
+          stats.expend.amount = utilityService.toshiToPersona(expendAmount, false, 2)
         }
       }
 

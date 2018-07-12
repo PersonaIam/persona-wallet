@@ -145,7 +145,6 @@ describe('transactionSenderService', () => {
           const selectedAccount = {}
 
           transactionSenderService.openDialogIn($scope, accountCtrl, selectedAccount)
-          // @see https://github.com/ArkEcosystem/ark-desktop/issues/385
           fillValidForm({ amount: 1.0440473 })
           $scope.submit(tab)
           expect(spy.firstCall.args[0].amount).to.equal(104404730)

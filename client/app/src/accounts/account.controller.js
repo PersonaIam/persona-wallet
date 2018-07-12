@@ -535,7 +535,7 @@
     }
 
     self.saveFolder = function (account, folder) {
-      accountService.setToFolder(account.address, folder, utilityService.arkToArktoshi(account.virtual.uservalue(folder)()))
+      accountService.setToFolder(account.address, folder, utilityService.personaToToshi(account.virtual.uservalue(folder)()))
     }
 
     self.deleteFolder = function (account, foldername) {
@@ -1054,8 +1054,8 @@
           darkVibrantRatio[color] = darkVibrantDiff
         })
 
-        const isArkJpg = _path.basename(url) === 'Persona.jpg'
-        let primaryColor = isArkJpg ? 'red' : sortObj(darkVibrantRatio)[0]
+        const isPersonaJpg = _path.basename(url) === 'Persona.jpg'
+        let primaryColor = isPersonaJpg ? 'red' : sortObj(darkVibrantRatio)[0]
         let accentColor = sortObj(vibrantRatio)[0]
 
         primaryColor = primaryColor === 'grey' ? 'blue-grey' : primaryColor
@@ -1556,7 +1556,7 @@
       function warnAboutSecondPassphraseFee () {
         accountService.getFees(true).then((fees) => {
           const secondPhraseArktoshiVal = fees['secondsignature']
-          const secondPhraseArkVal = utilityService.arktoshiToArk(secondPhraseArktoshiVal, true)
+          const secondPhraseArkVal = utilityService.toshiToPersona(secondPhraseArktoshiVal, true)
           const confirm = $mdDialog.confirm({
             title: gettextCatalog.getString('Second Passphrase fee ({{ currency }})', {currency: networkService.getNetwork().symbol}),
             secondPhraseArkVal: secondPhraseArkVal,
@@ -1646,7 +1646,7 @@
       function send () {
         $mdDialog.hide()
 
-        transaction = accountService.formatTransaction(transaction, selectedAccount.address)
+        transaction = accountService.formatTransaction(transaction, transaction.recipientId)
         transaction.confirmations = 0
 
         networkService.postTransaction(transaction).then(
@@ -1678,8 +1678,8 @@
         transaction,
         label: transactionLabel,
         // to avoid small transaction to be displayed as 1e-8
-        humanAmount: utilityService.arktoshiToArk(transaction.amount),
-        totalAmount: utilityService.arktoshiToArk(parseFloat(transaction.amount) + transaction.fee, true)
+        humanAmount: transaction.amount,
+        totalAmount: parseFloat(transaction.amount) + transaction.fee
       }
 
       const contacts = self.searchContactOrAccount(transaction.recipientId, true)

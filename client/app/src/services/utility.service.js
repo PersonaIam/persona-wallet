@@ -2,48 +2,48 @@
   'use strict'
 
   angular.module('personaclient.services')
-    .service('utilityService', ['ARKTOSHI_UNIT', 'ARK_LAUNCH_DATE', UtilityService])
+    .service('utilityService', ['PERSONATOSHI_UNIT', 'LAUNCH_DATE', UtilityService])
 
   // this service should not have any dependencies to other services!
-  function UtilityService (ARKTOSHI_UNIT, ARK_LAUNCH_DATE) {
-    function arktoshiToArk (amount, keepPrecise, numberOfDecimals) {
+  function UtilityService (PERSONATOSHI_UNIT, LAUNCH_DATE) {
+    function toshiToPersona (amount, keepPrecise, numberOfDecimals) {
       if (!amount) {
         return 0
       }
 
-      let ark = amount / ARKTOSHI_UNIT
+      let persona = amount / PERSONATOSHI_UNIT
 
       if (!keepPrecise) {
-        ark = numberToFixed(ark)
+        persona = numberToFixed(persona)
       }
 
       if (typeof numberOfDecimals !== 'number') {
-        return ark
+        return persona
       }
 
-      if (typeof ark === 'number') {
-        return ark.toFixed(numberOfDecimals)
+      if (typeof persona === 'number') {
+        return persona.toFixed(numberOfDecimals)
       }
 
       // if we have a string, 'toFixed' won't work, so we use our custom implementation for that
-      return numberStringToFixed(ark, numberOfDecimals)
+      return numberStringToFixed(persona, numberOfDecimals)
     }
 
-    function arkToArktoshi (amount, numberOfDecimals) {
+    function personaToToshi (amount, numberOfDecimals) {
       if (!amount) {
         return 0
       }
 
-      const ark = amount * ARKTOSHI_UNIT
-      return typeof numberOfDecimals !== 'number' ? ark : ark.toFixed(numberOfDecimals)
+      const persona = amount * PERSONATOSHI_UNIT
+      return typeof numberOfDecimals !== 'number' ? persona : persona.toFixed(numberOfDecimals)
     }
 
-    function numberStringToFixed (ark, numberOfDecimals) {
-      if (typeof ark !== 'string' || typeof numberOfDecimals === 'undefined') {
-        return ark
+    function numberStringToFixed (persona, numberOfDecimals) {
+      if (typeof persona !== 'string' || typeof numberOfDecimals === 'undefined') {
+        return persona
       }
 
-      const splitted = ark.split('.')
+      const splitted = persona.split('.')
 
       if (numberOfDecimals === 0) {
         return splitted[0]
@@ -62,25 +62,25 @@
       return splitted[0] + '.' + newDecimals
     }
 
-    function dateToArkStamp (date) {
+    function dateToPersonaStamp (date) {
       if (!date) {
         return null
       }
 
       date = new Date(date.toUTCString())
 
-      const timestamp = parseInt((date.getTime() - ARK_LAUNCH_DATE.getTime()) / 1000)
+      const timestamp = parseInt((date.getTime() - LAUNCH_DATE.getTime()) / 1000)
       return timestamp < 0 ? null : timestamp
     }
 
-    function arkStampToDate (arkRelativeTimeStamp) {
-      if (typeof arkRelativeTimeStamp !== 'number' || arkRelativeTimeStamp < 0) {
+    function personaStampToDate (personaRelativeTimeStamp) {
+      if (typeof personaRelativeTimeStamp !== 'number' || personaRelativeTimeStamp < 0) {
         return null
       }
 
-      const arkLaunchTime = parseInt(ARK_LAUNCH_DATE.getTime() / 1000)
+      const personaLaunchTime = parseInt(LAUNCH_DATE.getTime() / 1000)
 
-      return new Date((arkRelativeTimeStamp + arkLaunchTime) * 1000)
+      return new Date((personaRelativeTimeStamp + personaLaunchTime) * 1000)
     }
 
     function createRefreshState (successMessage, errorMessage) {
@@ -150,12 +150,12 @@
     }
 
     return {
-      arktoshiToArk: arktoshiToArk,
-      arkToArktoshi: arkToArktoshi,
+      toshiToPersona: toshiToPersona,
+      personaToToshi: personaToToshi,
       numberStringToFixed: numberStringToFixed,
 
-      dateToArkStamp: dateToArkStamp,
-      arkStampToDate: arkStampToDate,
+      dateToPersonaStamp: dateToPersonaStamp,
+      personaStampToDate: personaStampToDate,
 
       createRefreshState: createRefreshState
     }
