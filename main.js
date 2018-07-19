@@ -145,7 +145,7 @@ function createWindow () {
     click: () => openAboutWindow({
       icon_path: `${__dirname}/client/persona.png`,
       package_json_dir: __dirname,
-      copyright: 'Copyright (c) 2017 PERSONA',
+      copyright: 'Copyright (c) 2018 PERSONA',
       homepage: 'https://persona.im/'
       // bug_report_url: 'https://github.com/PersonaIam'
     })
