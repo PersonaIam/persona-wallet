@@ -214,7 +214,7 @@
 
     function formatTransaction (transaction, recipientAddress) {
       transaction.label = getTransactionLabel(transaction, recipientAddress)
-      transaction.date = transaction.timestamp
+      transaction.date = utilityService.personaStampToDate(transaction.timestamp)
       if (transaction.recipientId === recipientAddress) {
         transaction.total = transaction.amount
       // if (transaction.type == 0) {
