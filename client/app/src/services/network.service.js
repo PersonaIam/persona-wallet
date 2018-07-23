@@ -132,6 +132,7 @@
       const personaJsNetwork = persona.networks[personaJsNetworkKey]
 
       return {
+        name: personaJsNetwork.name,
         personaJsKey: personaJsNetworkKey,
         nethash: personaJsNetwork.nethash,
         peerseed: 'http://' + personaJsNetwork.activePeer.ip + ':' + personaJsNetwork.activePeer.port,

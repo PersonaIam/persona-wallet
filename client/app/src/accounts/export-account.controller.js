@@ -14,19 +14,16 @@
       'gettext',
       'account',
       'theme',
-      'LAUNCH_DATE',
       ExportAccountController
     ])
 
-  function ExportAccountController ($scope, $filter, $mdDialog, accountService, toastService, utilityService, gettextCatalog, gettext, account, theme, LAUNCH_DATE) {
+  function ExportAccountController ($scope, $filter, $mdDialog, accountService, toastService, utilityService, gettextCatalog, gettext, account, theme) {
     $scope.vm = {}
     $scope.vm.account = account
     $scope.vm.theme = theme
     $scope.vm.numberOfReceivedTransactions = 0
     $scope.vm.hasStarted = false
     $scope.vm.isFinished = false
-
-    $scope.vm.minDate = LAUNCH_DATE
 
     $scope.vm.startDate = new Date()
     $scope.vm.startDate.setMonth($scope.vm.startDate.getMonth() - 1)

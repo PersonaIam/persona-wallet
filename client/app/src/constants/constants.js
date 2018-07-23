@@ -14,4 +14,6 @@
   angular.module('personaclient.constants')
   // all timestamps start at 2017/3/21 13:00
     .constant('LAUNCH_DATE', new Date(Date.UTC(2017, 2, 21, 13, 0, 0, 0)))
+    .constant('LAUNCH_DATE_MAIN', new Date(Date.UTC(2018, 1, 1, 0, 0, 0, 0)))
+    .constant('MAIN_NETWORK_VERSION', '55')
 })()

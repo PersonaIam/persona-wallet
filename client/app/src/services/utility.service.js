@@ -2,10 +2,10 @@
   'use strict'
 
   angular.module('personaclient.services')
-    .service('utilityService', ['PERSONATOSHI_UNIT', 'LAUNCH_DATE', UtilityService])
+    .service('utilityService', ['PERSONATOSHI_UNIT', 'LAUNCH_DATE', 'LAUNCH_DATE_MAIN', UtilityService])
 
   // this service should not have any dependencies to other services!
-  function UtilityService (PERSONATOSHI_UNIT, LAUNCH_DATE) {
+  function UtilityService (PERSONATOSHI_UNIT, LAUNCH_DATE, LAUNCH_DATE_MAIN, MAIN_NETWORK_VERSION) {
     function toshiToPersona (amount, keepPrecise, numberOfDecimals) {
       if (!amount) {
         return 0
@@ -62,23 +62,33 @@
       return splitted[0] + '.' + newDecimals
     }
 
-    function dateToPersonaStamp (date) {
+    function getLaunchDate (networkVersion) {
+      let launchDate
+      if (!networkVersion || networkVersion === MAIN_NETWORK_VERSION) {
+        launchDate = LAUNCH_DATE_MAIN // new Date(Date.UTC(2018, 1, 1, 0, 0, 0, 0))
+      } else {
+        launchDate = LAUNCH_DATE // new Date(Date.UTC(2017, 2, 21, 13, 0, 0, 0))
+      }
+      return launchDate
+    }
+
+    function dateToPersonaStamp (date, networkVersion) {
       if (!date) {
         return null
       }
 
       date = new Date(date.toUTCString())
-
-      const timestamp = parseInt((date.getTime() - LAUNCH_DATE.getTime()) / 1000)
+      let launchDate = getLaunchDate(networkVersion)
+      const timestamp = parseInt((date.getTime() - launchDate.getTime()) / 1000)
       return timestamp < 0 ? null : timestamp
     }
 
-    function personaStampToDate (personaRelativeTimeStamp) {
+    function personaStampToDate (personaRelativeTimeStamp, networkVersion) {
       if (typeof personaRelativeTimeStamp !== 'number' || personaRelativeTimeStamp < 0) {
         return null
       }
-
-      const personaLaunchTime = parseInt(LAUNCH_DATE.getTime() / 1000)
+      let launchDate = getLaunchDate(networkVersion)
+      const personaLaunchTime = parseInt(launchDate.getTime() / 1000)
 
       return new Date((personaRelativeTimeStamp + personaLaunchTime) * 1000)
     }
@@ -156,6 +166,7 @@
 
       dateToPersonaStamp: dateToPersonaStamp,
       personaStampToDate: personaStampToDate,
+      getLaunchDate: getLaunchDate,
 
       createRefreshState: createRefreshState
     }

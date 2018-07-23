@@ -2,7 +2,7 @@
   'use strict'
 
   angular.module('personaclient.accounts')
-    .service('accountService', ['$q', '$http', 'networkService', 'storageService', 'ledgerService', 'gettextCatalog', 'gettext', 'utilityService', 'LAUNCH_DATE', AccountService])
+    .service('accountService', ['$q', '$http', 'networkService', 'storageService', 'ledgerService', 'gettextCatalog', 'gettext', 'utilityService', AccountService])
 
   /**
    * Accounts DataService
@@ -12,7 +12,7 @@
    * @returns {{loadAll: Function}}
    * @constructor
    */
-  function AccountService ($q, $http, networkService, storageService, ledgerService, gettextCatalog, gettext, utilityService, LAUNCH_DATE) {
+  function AccountService ($q, $http, networkService, storageService, ledgerService, gettextCatalog, gettext, utilityService) {
     const self = this
     const persona = require(require('path').resolve(__dirname, '../node_modules/personajs'))
 
@@ -37,7 +37,7 @@
     self.peer = networkService.getPeer().ip
 
     function showTimestamp (timestamp) { // eslint-disable-line no-unused-vars
-      const date = utilityService.personaStampToDate(timestamp)
+      const date = utilityService.personaStampToDate(timestamp, 'testnet')
 
       const currentTime = new Date().getTime()
       const diffTime = (currentTime - date.getTime()) / 1000
@@ -214,7 +214,8 @@
 
     function formatTransaction (transaction, recipientAddress) {
       transaction.label = getTransactionLabel(transaction, recipientAddress)
-      transaction.date = utilityService.personaStampToDate(transaction.timestamp)
+      let networkVersion = !networkService.getNetwork() ? '66' : networkService.getNetwork().version
+      transaction.date = utilityService.personaStampToDate(transaction.timestamp, networkVersion)
       if (transaction.recipientId === recipientAddress) {
         transaction.total = transaction.amount
       // if (transaction.type == 0) {
@@ -283,9 +284,11 @@
 
     // this methods only works correctly, as long as getAllTransactions returns the transactions ordered by new to old!
     function getRangedTransactions (address, startDate, endDate, onUpdate) {
-      const startStamp = utilityService.dateToPersonaStamp(!startDate ? LAUNCH_DATE : startDate)
-      const endStamp = utilityService.dateToPersonaStamp(!endDate ? new Date(new Date().setHours(23, 59, 59, 59)) : endDate)
-
+      let networkVersion = networkService.getNetwork().version
+      startDate = !startDate ? utilityService.getLaunchDate(networkVersion) : startDate
+      let startStamp = utilityService.dateToPersonaStamp(startDate, networkVersion)
+      endDate = !endDate ? new Date(new Date().setHours(23, 59, 59, 59)) : endDate
+      let endStamp = utilityService.dateToPersonaStamp(endDate, networkVersion)
       const deferred = $q.defer()
 
       let transactions = []
