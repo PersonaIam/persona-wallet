@@ -2,10 +2,10 @@
   'use strict'
 
   angular.module('personaclient.services')
-    .service('utilityService', ['PERSONATOSHI_UNIT', 'LAUNCH_DATE', 'LAUNCH_DATE_MAIN', UtilityService])
+    .service('utilityService', ['PERSONATOSHI_UNIT', 'LAUNCH_DATE', 'LAUNCH_DATE_TEST', 'MAIN_NETWORK_VERSION', UtilityService])
 
   // this service should not have any dependencies to other services!
-  function UtilityService (PERSONATOSHI_UNIT, LAUNCH_DATE, LAUNCH_DATE_MAIN, MAIN_NETWORK_VERSION) {
+  function UtilityService (PERSONATOSHI_UNIT, LAUNCH_DATE, LAUNCH_DATE_TEST, MAIN_NETWORK_VERSION) {
     function toshiToPersona (amount, keepPrecise, numberOfDecimals) {
       if (!amount) {
         return 0
@@ -65,9 +65,9 @@
     function getLaunchDate (networkVersion) {
       let launchDate
       if (!networkVersion || networkVersion === MAIN_NETWORK_VERSION) {
-        launchDate = LAUNCH_DATE_MAIN // new Date(Date.UTC(2018, 1, 1, 0, 0, 0, 0))
+        launchDate = LAUNCH_DATE // new Date(Date.UTC(2018, 1, 1, 0, 0, 0, 0))
       } else {
-        launchDate = LAUNCH_DATE // new Date(Date.UTC(2017, 2, 21, 13, 0, 0, 0))
+        launchDate = LAUNCH_DATE_TEST // new Date(Date.UTC(2017, 2, 21, 13, 0, 0, 0))
       }
       return launchDate
     }

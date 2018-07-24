@@ -158,7 +158,7 @@ describe('utilityService', () => {
     })
 
     it('input is persona launch time, returns 0', () => {
-      expect(utilityService.dateToPersonaStamp(LAUNCH_DATE, 0x42)).to.eq(0)
+      expect(utilityService.dateToPersonaStamp(LAUNCH_DATE, 0x37)).to.eq(0)
     })
 
     it('input is BEFORE persona launch time, returns null', () => {
@@ -186,7 +186,7 @@ describe('utilityService', () => {
     })
 
     it('input is 0, returns persona launch date', () => {
-      expect(utilityService.personaStampToDate(0, 0x42).getTime()).to.eq(LAUNCH_DATE.getTime())
+      expect(utilityService.personaStampToDate(0, 0x37).getTime()).to.eq(LAUNCH_DATE.getTime())
     })
 
     it('input is lower than 0, returns null', () => {
