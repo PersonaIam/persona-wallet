@@ -76,7 +76,7 @@
                                                                   config.smartbridge,
                                                                   config.masterpassphrase,
                                                                   config.secondpassphrase,
-                                                                  undefined,
+                                                                  networkService.getNetwork().version,
                                                                   fees.send))
       })
     }
