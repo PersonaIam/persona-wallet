@@ -4,6 +4,36 @@
   angular.module('personaclient.services')
     .service('networkService', ['$q', '$http', '$timeout', 'storageService', 'timeService', 'toastService', NetworkService])
 
+  function postV2 ($http, peerip, body, clientVersion, network) {
+    return $http({
+      url: peerip + '/api/v2/transactions',
+      data: body,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'os': 'persona-desktop',
+        'version': clientVersion,
+        'port': 1,
+        'nethash': network.nethash
+      }
+    })
+  }
+
+  function postV1 ($http, peerip, body, clientVersion, network) {
+    return $http({
+      url: peerip + '/api/transactions',
+      data: body,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'os': 'persona-desktop',
+        'version': clientVersion,
+        'port': 1,
+        'nethash': network.nethash
+      }
+    })
+  }
+
   /**
    * NetworkService
    * @constructor
@@ -249,32 +279,24 @@
       // }
     }
 
+    // TODO consider refactoring this, or remove V1 call altogether after V2 migration
     function postTransaction (transaction, ip) {
       const deferred = $q.defer()
       let peerip = ip
       if (!peerip) {
         peerip = seed.ip
       }
-      $http({
-        url: peerip + '/api/transactions',
-        data: transaction,
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'os': 'persona-desktop',
-          'version': clientVersion,
-          'port': 1,
-          'nethash': network.nethash
-        }
-      }).then((resp) => {
-        if (resp.data.success) {
-          // we make sure that tx is well broadcasted
-          if (!ip) {
-            // broadcastTransaction(transaction)
-          }
+      postV2($http, peerip, {transactions: [transaction]}, clientVersion, network).then((resp) => {
+        if (resp.data.data.accept) {
           deferred.resolve(transaction)
         } else {
-          deferred.reject(resp.data)
+          postV1($http, peerip, transaction, clientVersion, network).then((resp) => {
+            if (resp.data.success) {
+              deferred.resolve(transaction)
+              return deferred.promise
+            }
+          })
+          deferred.reject(resp.data.data)
         }
       }, (error) => deferred.reject(error))
       return deferred.promise
