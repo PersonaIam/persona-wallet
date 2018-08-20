@@ -268,7 +268,9 @@
           for (let i = 0; i < resp.transactions.length; i++) {
             formatTransaction(resp.transactions[i], address)
           }
-          if (store) storageService.set('transactions-' + address, resp.transactions)
+          if (store) {
+            storageService.set('transactions-' + address, resp.transactions)
+          }
 
           deferred.resolve(resp.transactions)
         } else {

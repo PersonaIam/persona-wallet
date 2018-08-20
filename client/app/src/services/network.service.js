@@ -279,26 +279,30 @@
       // }
     }
 
-    // TODO consider refactoring this, or remove V1 call altogether after V2 migration
     function postTransaction (transaction, ip) {
       const deferred = $q.defer()
       let peerip = ip
       if (!peerip) {
         peerip = seed.ip
       }
-      postV2($http, peerip, {transactions: [transaction]}, clientVersion, network).then((resp) => {
-        if (resp.data.data.accept) {
+
+      // if (!network.version) {
+      //   postV2($http, peerip, {transactions: [transaction]}, clientVersion, network).then((resp) => {
+      //     if (resp.data.data.accept) {
+      //       deferred.resolve(transaction)
+      //     } else {
+      //       deferred.reject(resp.data.data)
+      //     }
+      //   }, (error) => deferred.reject(error))
+      // } else {
+      postV1($http, peerip, transaction, clientVersion, network).then((resp) => {
+        if (resp.data.success) {
           deferred.resolve(transaction)
         } else {
-          postV1($http, peerip, transaction, clientVersion, network).then((resp) => {
-            if (resp.data.success) {
-              deferred.resolve(transaction)
-              return deferred.promise
-            }
-          })
           deferred.reject(resp.data.data)
         }
       }, (error) => deferred.reject(error))
+      // }
       return deferred.promise
     }
 
