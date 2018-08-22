@@ -212,7 +212,13 @@
         createTransaction(deferred,
                           config,
                           fees.vote,
-                          () => persona.vote.createVote(config.masterpassphrase, config.publicKeys.split(','), config.secondpassphrase, fees.vote),
+                          () => persona.vote.createVote(
+                            config.masterpassphrase,
+                            config.publicKeys.split(','),
+                            config.secondpassphrase,
+                            networkService.getNetwork().version,
+                            config.publicKey,
+                          ),
                           (transaction) => { transaction.recipientId = config.fromAddress })
       })
     }

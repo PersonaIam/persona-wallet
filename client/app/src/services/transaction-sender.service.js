@@ -75,7 +75,7 @@
         if (!$scope[`${tab}Form`].$valid) {
           return
         }
-
+        
         const data = {
           ledger: selectedAccount.ledger,
           publicKey: selectedAccount.publicKey,
