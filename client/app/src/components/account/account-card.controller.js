@@ -44,9 +44,7 @@
       if (!account.delegate) {
         add(gettext('Label'), 'local_offer')
 
-        if (!account.ledger) {
-          add(gettext('Register Delegate'), 'perm_identity')
-        }
+        add(gettext('Register Delegate'), 'perm_identity')
       }
 
       add(gettext('Timestamp Document'), 'verified_user')

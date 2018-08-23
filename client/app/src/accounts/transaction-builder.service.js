@@ -77,7 +77,8 @@
                                                                   config.masterpassphrase,
                                                                   config.secondpassphrase,
                                                                   networkService.getNetwork().version,
-                                                                  fees.send))
+                                                                  !!config.ledger,
+                            ))
       })
     }
 
@@ -113,7 +114,15 @@
           const processed = Promise.all(
             transactions.map(({ address, amount, smartbridge }, i) => {
               return new Promise((resolve, reject) => {
-                const transaction = persona.transaction.createTransaction(address, amount, smartbridge, masterpassphrase, secondpassphrase, undefined, fees.send)
+                const transaction = persona.transaction.createTransaction(
+                  address,
+                  amount,
+                  smartbridge,
+                  masterpassphrase,
+                  secondpassphrase,
+                  networkService.getNetwork().version,
+                  !!ledger
+                )
 
                 transaction.fee = fees.send
                 transaction.senderId = fromAddress
@@ -191,7 +200,14 @@
         createTransaction(deferred,
                           config,
                           fees.delegate,
-                          () => persona.delegate.createDelegate(config.masterpassphrase, config.username, config.secondpassphrase, fees.delegate))
+                          () => persona.delegate.createDelegate(
+                            config.masterpassphrase,
+                            config.username,
+                            config.secondpassphrase,
+                            !!config.ledger,
+                            networkService.getNetwork().version,
+                            config.publicKey,
+                          ))
       })
     }
 
@@ -216,6 +232,7 @@
                             config.masterpassphrase,
                             config.publicKeys.split(','),
                             config.secondpassphrase,
+                            !!config.ledger,
                             networkService.getNetwork().version,
                             config.publicKey,
                           ),
