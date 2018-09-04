@@ -57,6 +57,7 @@ function createWindow () {
 
   mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: true, frame: true, show: false})
   mainWindow.setContentProtection(true)
+  mainWindow.restore()
   mainWindowState.manage(mainWindow)
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/client/app/index.html`)
@@ -145,7 +146,7 @@ function createWindow () {
     click: () => openAboutWindow({
       icon_path: `${__dirname}/client/persona.png`,
       package_json_dir: __dirname,
-      copyright: 'Copyright (c) 2017 PERSONA',
+      copyright: 'Copyright (c) 2018 PERSONA',
       homepage: 'https://persona.im/'
       // bug_report_url: 'https://github.com/PersonaIam'
     })

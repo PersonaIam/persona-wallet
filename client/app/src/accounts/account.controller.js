@@ -975,7 +975,7 @@
           })
         })
       }
-
+      
       $scope.send = { data, openFile, cancel, next }
 
       $mdDialog.show({

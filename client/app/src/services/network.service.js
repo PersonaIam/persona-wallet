@@ -4,6 +4,36 @@
   angular.module('personaclient.services')
     .service('networkService', ['$q', '$http', '$timeout', 'storageService', 'timeService', 'toastService', NetworkService])
 
+  function postV2 ($http, peerip, body, clientVersion, network) {
+    return $http({
+      url: peerip + '/api/v2/transactions',
+      data: body,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'os': 'persona-desktop',
+        'version': clientVersion,
+        'port': 1,
+        'nethash': network.nethash
+      }
+    })
+  }
+
+  function postV1 ($http, peerip, body, clientVersion, network) {
+    return $http({
+      url: peerip + '/api/transactions',
+      data: body,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'os': 'persona-desktop',
+        'version': clientVersion,
+        'port': 1,
+        'nethash': network.nethash
+      }
+    })
+  }
+
   /**
    * NetworkService
    * @constructor
@@ -132,6 +162,7 @@
       const personaJsNetwork = persona.networks[personaJsNetworkKey]
 
       return {
+        name: personaJsNetwork.name,
         personaJsKey: personaJsNetworkKey,
         nethash: personaJsNetwork.nethash,
         peerseed: 'http://' + personaJsNetwork.activePeer.ip + ':' + personaJsNetwork.activePeer.port,
@@ -252,15 +283,15 @@
       const deferred = $q.defer()
       let peerip = ip
       if (!peerip) {
-        peerip = seed.ip
+        peerip = peer.ip
       }
       $http({
-        url: peerip + '/api/transactions',
-        data: transaction,
-        method: 'PUT',
+        url: peerip + '/peer/transactions',
+        data: { transactions: [transaction] },
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'os': 'persona-desktop',
+          'os': 'ark-desktop',
           'version': clientVersion,
           'port': 1,
           'nethash': network.nethash
@@ -269,7 +300,7 @@
         if (resp.data.success) {
           // we make sure that tx is well broadcasted
           if (!ip) {
-            // broadcastTransaction(transaction)
+            broadcastTransaction(transaction)
           }
           deferred.resolve(transaction)
         } else {
@@ -278,6 +309,33 @@
       }, (error) => deferred.reject(error))
       return deferred.promise
     }
+
+    // function postTransaction2 (transaction, ip) {
+    //   const deferred = $q.defer()
+    //   let peerip = ip
+    //   if (!peerip) {
+    //     peerip = seed.ip
+    //   }
+
+    // if (!network.version) {
+    //   postV2($http, peerip, {transactions: [transaction]}, clientVersion, network).then((resp) => {
+    //     if (resp.data.data.accept) {
+    //       deferred.resolve(transaction)
+    //     } else {
+    //       deferred.reject(resp.data.data)
+    //     }
+    //   }, (error) => deferred.reject(error))
+    // } else {
+    //   postV1($http, peerip, transaction, clientVersion, network).then((resp) => {
+    //     if (resp.data.success) {
+    //       deferred.resolve(transaction)
+    //     } else {
+    //       deferred.reject(resp.data.data)
+    //     }
+    //   }, (error) => deferred.reject(error))
+    //   // }
+    //   return deferred.promise
+    // }
 
     function pickRandomPeer () {
       if (network.forcepeer) {
@@ -314,7 +372,7 @@
         peers = tryGetPeersFromPersonaJs()
         isStaticPeerList = true
       } else if (index === 0) {
-        peers = peers.sort((a, b) => b.height - a.height || a.delay - b.delay).filter(p => p.ip !== '127.0.0.1')
+        peers = peers.sort((a, b) => b.height - a.height || a.delay - b.delay).filter(p => p.ip.substr(0, 3) !== '127')
       }
 
       // check again or we may have an exception in the case when we couldn't get the static peer list from personajs

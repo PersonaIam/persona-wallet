@@ -158,43 +158,43 @@ describe('utilityService', () => {
     })
 
     it('input is persona launch time, returns 0', () => {
-      expect(utilityService.dateToPersonaStamp(LAUNCH_DATE)).to.eq(0)
+      expect(utilityService.dateToPersonaStamp(LAUNCH_DATE, 0x37)).to.eq(0)
     })
 
     it('input is BEFORE persona launch time, returns null', () => {
-      expect(utilityService.dateToPersonaStamp(new Date(Date.UTC(2017, 2, 21, 12, 59, 59, 59)))).to.eq(null)
+      expect(utilityService.dateToPersonaStamp(new Date(Date.UTC(2017, 2, 21, 12, 59, 59, 59)), 0x42)).to.eq(null)
     })
 
     it('input is a utc date, returns correct timestamp', () => {
-      expect(utilityService.dateToPersonaStamp(new Date(Date.UTC(2017, 10, 10, 10, 0, 0, 0)))).to.eq(20206800)
+      expect(utilityService.dateToPersonaStamp(new Date(Date.UTC(2017, 10, 10, 10, 0, 0, 0)), 0x42)).to.eq(20206800)
     })
 
     it('input is a local date, returns correct timestamp', () => {
       // since this is plus 1, this means that in UTC, it's currently 09:00, therefore the timestamphas to be 1 hour shorter than the one above
       const localDate = new Date('Fri Nov 10 2017 10:00:00 GMT+0100 (Romance Standard Time)')
       const oneHourInSeconds = 60 * 60
-      expect(utilityService.dateToPersonaStamp(localDate)).to.eq(20206800 - oneHourInSeconds)
+      expect(utilityService.dateToPersonaStamp(localDate, 0x42)).to.eq(20206800 - oneHourInSeconds)
     })
   })
 
   describe('personaStampToDate', () => {
     it('input ist not a number, returns null', () => {
       expect(utilityService.personaStampToDate()).to.eq(null)
-      expect(utilityService.personaStampToDate(null)).to.eq(null)
-      expect(utilityService.personaStampToDate('abc')).to.eq(null)
-      expect(utilityService.personaStampToDate({})).to.eq(null)
+      expect(utilityService.personaStampToDate(null, 0x42)).to.eq(null)
+      expect(utilityService.personaStampToDate('abc', 0x42)).to.eq(null)
+      expect(utilityService.personaStampToDate({}, 0x42)).to.eq(null)
     })
 
     it('input is 0, returns persona launch date', () => {
-      expect(utilityService.personaStampToDate(0).getTime()).to.eq(LAUNCH_DATE.getTime())
+      expect(utilityService.personaStampToDate(0, 0x37).getTime()).to.eq(LAUNCH_DATE.getTime())
     })
 
     it('input is lower than 0, returns null', () => {
-      expect(utilityService.personaStampToDate(-1)).to.eq(null)
+      expect(utilityService.personaStampToDate(-1, 0x42)).to.eq(null)
     })
 
     it('input is a normal timestamp, returns correct date', () => {
-      expect(utilityService.personaStampToDate(20206800).getTime()).to.eq(new Date(Date.UTC(2017, 10, 10, 10, 0, 0, 0)).getTime())
+      expect(utilityService.personaStampToDate(20206800, 0x42).getTime()).to.eq(new Date(Date.UTC(2017, 10, 10, 10, 0, 0, 0)).getTime())
     })
   })
 })

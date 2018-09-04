@@ -199,9 +199,11 @@ describe('accountService', () => {
   describe('getRangedTransactions', () => {
     // these are all persona-relative timestamps
     const timestamps = {
-      '2017_05_05': 3834000,
-      '2017_10_10': 17485200,
-      '2017_12_12': 22932000
+      '2018_05_05': 7938000,
+      '2018_06_06': 10702800,
+      '2018_07_07': 13381200,
+      '2018_10_10': 21589200,
+      '2018_12_12': 27036000
     }
 
     it('has 0 transactions, length should be 0', (done) => {
@@ -216,10 +218,10 @@ describe('accountService', () => {
     })
 
     it('has 0 transactions in range, length should be 0', (done) => {
-      mockGetFromPeer([createTxArray(50, timestamps['2017_05_05'])])
+      mockGetFromPeer([createTxArray(50, timestamps['2018_05_05'])])
 
-      const startDate = new Date(2017, 10, 21)
-      const endDate = new Date(2017, 11, 21)
+      const startDate = new Date(2018, 10, 21)
+      const endDate = new Date(2018, 11, 21)
       accountService.getRangedTransactions(null, startDate, endDate)
         .then(transactions => {
           expect(transactions.length).to.eql(0)
@@ -229,9 +231,9 @@ describe('accountService', () => {
     })
 
     it('has 0 transactions in range, has a total of 150 transactions, cancels after first run (because timestamp is older than startdate), length should be 0', (done) => {
-      mockGetFromPeer([createTxArray(50, timestamps['2017_05_05']),
-        createTxArray(50, timestamps['2017_05_05']),
-        createTxArray(50, timestamps['2017_05_05'])])
+      mockGetFromPeer([createTxArray(50, timestamps['2018_05_05']),
+        createTxArray(50, timestamps['2018_05_05']),
+        createTxArray(50, timestamps['2018_05_05'])])
 
       let numberOfTimesUpdateWasCalled = 0
       const onUpdateCheck = (updateObj) => {
@@ -239,8 +241,8 @@ describe('accountService', () => {
         numberOfTimesUpdateWasCalled++
       }
 
-      const startDate = new Date(2017, 10, 21)
-      const endDate = new Date(2017, 11, 21)
+      const startDate = new Date(2018, 10, 21)
+      const endDate = new Date(2018, 11, 21)
       accountService.getRangedTransactions(null, startDate, endDate, onUpdateCheck)
         .then(transactions => {
           expect(transactions.length).to.eql(0)
@@ -251,9 +253,9 @@ describe('accountService', () => {
     })
 
     it('has 0 transactions in range, has a total of 150 transactions, has to do all runs (because timestamp is never older than startdate), length should be 0', (done) => {
-      mockGetFromPeer([createTxArray(50, timestamps['2017_12_12']),
-        createTxArray(50, timestamps['2017_12_12']),
-        createTxArray(50, timestamps['2017_12_12']),
+      mockGetFromPeer([createTxArray(50, timestamps['2018_12_12']),
+        createTxArray(50, timestamps['2018_12_12']),
+        createTxArray(50, timestamps['2018_12_12']),
         createTxArray(0)])
 
       let numberOfTimesUpdateWasCalled = 0
@@ -262,8 +264,8 @@ describe('accountService', () => {
         numberOfTimesUpdateWasCalled++
       }
 
-      const startDate = new Date(2017, 9, 21)
-      const endDate = new Date(2017, 10, 21)
+      const startDate = new Date(2018, 9, 21)
+      const endDate = new Date(2018, 10, 21)
       accountService.getRangedTransactions(null, startDate, endDate, onUpdateCheck)
         .then(transactions => {
           expect(transactions.length).to.eql(0)
@@ -274,10 +276,10 @@ describe('accountService', () => {
     })
 
     it('has all (50) transactions in range, length should be 50', (done) => {
-      mockGetFromPeer([createTxArray(50, timestamps['2017_05_05']), createTxArray(0)])
+      mockGetFromPeer([createTxArray(50, timestamps['2018_05_05']), createTxArray(0)])
 
-      const startDate = new Date(2017, 4, 4)
-      const endDate = new Date(2017, 4, 6)
+      const startDate = new Date(2018, 4, 4)
+      const endDate = new Date(2018, 4, 6)
       accountService.getRangedTransactions(null, startDate, endDate)
         .then(transactions => {
           expect(transactions.length).to.eql(50)
@@ -287,9 +289,9 @@ describe('accountService', () => {
     })
 
     it('has 25 of 75 transactions in range, length should be 25 (in different arrays/calls), update called 3 times', (done) => {
-      mockGetFromPeer([createTxArray(25, timestamps['2017_12_12']),
-        createTxArray(25, timestamps['2017_10_10']),
-        createTxArray(25, timestamps['2017_05_05'])])
+      mockGetFromPeer([createTxArray(25, timestamps['2018_12_12']),
+        createTxArray(25, timestamps['2018_10_10']),
+        createTxArray(25, timestamps['2018_05_05'])])
 
       let numberOfTimesUpdateWasCalled = 0
       const expectedUpdateNumbers = [0, 25, 0]
@@ -298,8 +300,8 @@ describe('accountService', () => {
         numberOfTimesUpdateWasCalled++
       }
 
-      const startDate = new Date(2017, 9, 9)
-      const endDate = new Date(2017, 9, 11)
+      const startDate = new Date(2018, 9, 9)
+      const endDate = new Date(2018, 9, 11)
       accountService.getRangedTransactions(null, startDate, endDate, onUpdateCheck)
         .then(transactions => {
           expect(transactions.length).to.eql(25)
@@ -310,9 +312,9 @@ describe('accountService', () => {
     })
 
     it('has 25 of 75 transactions in range, length should be 25 (in same arrays/calls), update called 1 time', (done) => {
-      mockGetFromPeer([createTxArray(25, timestamps['2017_12_12'])
-        .concat(createTxArray(25, timestamps['2017_10_10']))
-        .concat(createTxArray(25, timestamps['2017_05_05'])),
+      mockGetFromPeer([createTxArray(25, timestamps['2018_12_12'])
+        .concat(createTxArray(25, timestamps['2018_10_10']))
+        .concat(createTxArray(25, timestamps['2018_05_05'])),
       createTxArray(0)])
 
       let numberOfTimesUpdateWasCalled = 0
@@ -321,8 +323,8 @@ describe('accountService', () => {
         numberOfTimesUpdateWasCalled++
       }
 
-      const startDate = new Date(2017, 9, 9)
-      const endDate = new Date(2017, 9, 11)
+      const startDate = new Date(2018, 9, 9)
+      const endDate = new Date(2018, 9, 11)
       accountService.getRangedTransactions(null, startDate, endDate, onUpdateCheck)
         .then(transactions => {
           expect(transactions.length).to.eql(25)
@@ -333,13 +335,13 @@ describe('accountService', () => {
     })
 
     it('no startDate, has all (75) transactions in range, length should be 75', (done) => {
-      mockGetFromPeer([createTxArray(25, timestamps['2017_12_12']),
-        createTxArray(25, timestamps['2017_10_10']),
-        createTxArray(25, timestamps['2017_05_05']),
+      mockGetFromPeer([createTxArray(25, timestamps['2018_12_12']),
+        createTxArray(25, timestamps['2018_10_10']),
+        createTxArray(25, timestamps['2018_05_05']),
         createTxArray(0)])
 
       const startDate = null
-      const endDate = new Date(2018, 0, 1)
+      const endDate = new Date(2019, 0, 1)
       accountService.getRangedTransactions(null, startDate, endDate)
         .then(transactions => {
           expect(transactions.length).to.eql(75)
@@ -349,12 +351,12 @@ describe('accountService', () => {
     })
 
     it('no endDate, has all (75) transactions in range, length should be 75', (done) => {
-      mockGetFromPeer([createTxArray(25, timestamps['2017_12_12']),
-        createTxArray(25, timestamps['2017_10_10']),
-        createTxArray(25, timestamps['2017_05_05']),
+      mockGetFromPeer([createTxArray(25, timestamps['2018_07_07']),
+        createTxArray(25, timestamps['2018_06_06']),
+        createTxArray(25, timestamps['2018_05_05']),
         createTxArray(0)])
 
-      const startDate = new Date(2017, 0, 1)
+      const startDate = new Date(2018, 3, 3)
       const endDate = null
       accountService.getRangedTransactions(null, startDate, endDate)
         .then(transactions => {
@@ -367,8 +369,8 @@ describe('accountService', () => {
     it('throws error immediately, returns 0 transactions', (done) => {
       mockGetFromPeer([false])
 
-      const startDate = new Date(2017, 9, 10)
-      const endDate = new Date(2017, 9, 10)
+      const startDate = new Date(2018, 9, 10)
+      const endDate = new Date(2018, 9, 10)
       accountService.getRangedTransactions(null, startDate, endDate)
         .then(transactions => done("error: shouldn't be here!"))
         .catch(err => {
@@ -379,7 +381,7 @@ describe('accountService', () => {
     })
 
     it('throws error after first update, still returns transactions', (done) => {
-      mockGetFromPeer([createTxArray(50, timestamps['2017_10_10']), false])
+      mockGetFromPeer([createTxArray(50, timestamps['2018_10_10']), false])
 
       let numberOfTimesUpdateWasCalled = 0
       const onUpdateCheck = (updateObj) => {
@@ -387,8 +389,8 @@ describe('accountService', () => {
         numberOfTimesUpdateWasCalled++
       }
 
-      const startDate = new Date(2017, 9, 9)
-      const endDate = new Date(2017, 9, 11)
+      const startDate = new Date(2018, 9, 9)
+      const endDate = new Date(2018, 9, 11)
       accountService.getRangedTransactions(null, startDate, endDate, onUpdateCheck)
         .then(transactions => done("error: shouldn't be here!"))
         .catch(err => {
