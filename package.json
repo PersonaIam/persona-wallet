@@ -1,6 +1,6 @@
 {
   "name": "PersonaClient",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "productName": "PersonaClient",
   "description": "Persona Desktop Wallet",
   "main": "main.js",
