@@ -5,12 +5,12 @@
     .service('marketService', ['$q', '$http', 'storageService', 'networkService', MarketService])
 
   function MarketService ($q, $http, storageService, networkService) {
-    const baseUrl = 'https://min-api.cryptocompare.com'
-    const tickerEndpoint = 'data/pricemultifull'
-    const currencies = ['BTC', 'AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'EUR', 'GBP', 'HKD', 'IDR', 'INR', 'JPY', 'KRW', 'MXN', 'RUB']
+    const baseUrl = 'https://exchange.coss.io'
+    const tickerEndpoint = 'api/ticker'
+    const currencies = ['PRSN-BTC']
     const storageKey = 'marketTicker'
     const network = networkService.getNetwork()
-    const symbol = 'BTC'
+    const symbol = 'PRSN'
 
     const saveTicker = (ticker) => {
       const symbol = ticker.symbol
@@ -27,8 +27,8 @@
       return storageService.get(storageKey) || {}
     }
 
-    const getPrice = (currency = 'BTC') => {
-      if (!network.cmcTicker && network.token !== 'BTC') getEmptyMarket()
+    const getPrice = (currency = symbol) => {
+      if (!network.cmcTicker && network.token !== symbol) getEmptyMarket()
 
       const storage = storageService.get(storageKey)
       if (!storage) return getEmptyMarket()
@@ -42,12 +42,11 @@
 
     const fetchTicker = () => {
       const deferred = $q.defer()
-      const uri = `${baseUrl}/${tickerEndpoint}?fsyms=${symbol}&tsyms=${currencies.join(',')}`
+      const uri = `${baseUrl}/${tickerEndpoint}`
       $http.get(uri, {headers: {'Cache-Control': 'no-cache'}})
         .then(({ data }) => {
-          const json = data['RAW'][symbol] || data['RAW'][symbol.toUpperCase()]
+          const json = data['prsn-btc']
           if (!json) deferred.reject('Failed to find market price.')
-
           const currencies = generateRates(json)
           const timestamp = Date.now()
           const result = { symbol, currencies, timestamp }
@@ -68,12 +67,12 @@
       for (const currency of currencies) {
         const market = getEmptyMarket()
 
-        if (response[currency]) {
-          market.price = response[currency].PRICE
-          market.marketCap = response[currency].MKTCAP
-          market.volume = response[currency].TOTALVOLUME24HTO
-          market.timestamp = response[currency].LASTUPDATE
-          market.change24h = response[currency].CHANGEPCT24HOUR || null
+        if (response) {
+          market.price = response.lastPrice
+          market.marketCap = response.MKTCAP || null
+          market.volume = response.volume
+          market.timestamp = response.LASTUPDATE || 0
+          market.change24h = response.change24h || null
         }
 
         rates[currency] = market

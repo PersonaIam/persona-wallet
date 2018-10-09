@@ -155,6 +155,7 @@
     })
 
     self.currencies = [
+      { name: 'prsn-btc', symbol: 'Ƀ' },
       { name: 'btc', symbol: 'Ƀ' },
       { name: 'usd', symbol: '$' },
       { name: 'aud', symbol: 'A$' },
@@ -259,7 +260,7 @@
     self.btcValueActive = false
 
     self.bitcoinCurrency = self.currencies.find((currency) => {
-      return currency.name === 'btc'
+      return currency.name === 'prsn-btc'
     })
     self.toggleCurrency = self.bitcoinCurrency
 
@@ -336,7 +337,7 @@
 
     function updateTicker () {
       const update = () => {
-        const currencyName = self.btcValueActive ? 'btc' : self.currency.name
+        const currencyName = self.btcValueActive ? 'prsn-btc' : self.currency.name
         self.market = marketService.getPrice(currencyName)
       }
 

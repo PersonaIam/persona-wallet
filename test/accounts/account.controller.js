@@ -154,7 +154,7 @@ describe('AccountController', () => {
     context('bitcoinCurrency is valid', () => {
       it('bitcoinCurrency is valid', () => {
         expect(ctrl.bitcoinCurrency).to.not.be.undefined
-        expect(ctrl.bitcoinCurrency.name).to.equal('btc')
+        expect(ctrl.bitcoinCurrency.name).to.equal('prsn-btc')
       })
     })
 
