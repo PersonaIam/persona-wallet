@@ -20,10 +20,10 @@
       },
 
       /**
-       * Fetches and parses the RSS of ARK.io
+       * Fetches and parses the RSS of medium.com/personablockchain
        */
       fetchBlogEntries () {
-        const rssUrl = 'https://blog.ark.io/feed'
+        const rssUrl = 'https://medium.com/personablockchain';
         return this.fetchAndParse(rssUrl).then(parsed => parsed.feed.entries)
       }
     }

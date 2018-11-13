@@ -16,7 +16,7 @@
 
   function DashboardController ($scope, $mdToast, toastService, gettext, feedService, storageService) {
     this.$onInit = () => {
-      setTimeout(() => this.showAnnouncements(), 1000)
+      // setTimeout(() => this.showAnnouncements(), 1000) // no announcements for now
     }
 
     this.showAnnouncements = () => {
