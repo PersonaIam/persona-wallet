@@ -43,7 +43,8 @@
         deferred.reject(gettextCatalog.getString('Passphrase is not corresponding to account \'{{ address }}\'', {address: config.fromAddress}))
         return
       }
-
+      // the secret is not needed when sending the tx from the wallet, so make sure it is cleared, just in case
+      transaction.secret = ''
       deferred.resolve(transaction)
     }
 
@@ -77,8 +78,7 @@
                                                                   config.masterpassphrase,
                                                                   config.secondpassphrase,
                                                                   networkService.getNetwork().version,
-                                                                  !!config.ledger,
-                            ))
+                                                                  !!config.ledger))
       })
     }
 
@@ -206,7 +206,7 @@
                             config.secondpassphrase,
                             !!config.ledger,
                             networkService.getNetwork().version,
-                            config.publicKey,
+                            config.publicKey
                           ))
       })
     }
@@ -234,7 +234,7 @@
                             config.secondpassphrase,
                             !!config.ledger,
                             networkService.getNetwork().version,
-                            config.publicKey,
+                            config.publicKey
                           ),
                           (transaction) => { transaction.recipientId = config.fromAddress })
       })
